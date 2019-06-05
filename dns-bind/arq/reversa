@@ -1,0 +1,20 @@
+;
+; zona reversa {{ domain }}
+;
+$TTL	604800
+@	IN	SOA     {{ name_server }}.{{ domain }}. root.{{ domain }}. (
+			2018040701	; Serial
+			 604800		; Refresh
+			  86400		; Retry
+			2419200		; Expire
+			 604800 )	; Negative Cache TTL
+;
+@		IN	NS	ns.{{ domain }}.
+{{ id }}	IN	PTR	{{ name_server }}.{{ domain }}.
+{{ id }}	IN	PTR	ns.{{ domain }}.
+
+14	IN	PTR	www.{{ domain }}.
+15	IN	PTR	mail.{{ domain }}.
+;-------Computadores----------
+16	IN	PTR	pc01.{{ domain }}.
+

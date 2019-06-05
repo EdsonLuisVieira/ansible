@@ -1,0 +1,23 @@
+;
+; zona direta {{ domain }}
+;
+$TTL	604800
+@	IN	SOA	{{ name_server }}.{{ domain }}. root.{{ domain }}. (
+			2018040708	; Serial
+			 604800		; Refresh
+			  86400		; Retry
+			2419200		; Expire
+			 604800 )	; Negative Cache TTL
+;
+@			IN	NS	ns.{{ domain }}.
+{{ name_server }}	IN	A	{{ ip_dns }}
+ns			IN	A	{{ ip_dns }}
+{{ domain }}.		IN	A	{{ ip_dns }}
+
+
+srvweb			IN	A	192.168.0.14
+www			IN	CNAME	srvweb.{{ domain }}.
+srvmail			IN	A	192.168.0.15
+mail			IN	CNAME	srvmail.{{ domain }}.
+;------------ Computadores ----------
+pc01			IN	A       192.168.0.16

@@ -1,0 +1,9 @@
+zone "{{ domain }}" {
+	type master;
+	file "/etc/bind/db.{{ domain }}";
+};
+
+zone "{{ arpa }}" {
+	type master;
+	file "/etc/bind/db.reverse.{{ domain }}";
+};

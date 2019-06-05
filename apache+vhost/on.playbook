@@ -1,0 +1,63 @@
+- hosts: webservers
+  remote_user: assert
+  become: yes
+  vars:
+     porta: 8088
+     name_vhost: edson
+     diretorio_index: /var/www/edson/
+     domain: edson.com
+     alias: www.edson.com
+     admin: luis
+
+  tasks:
+
+  - name: update no servidor
+    apt:
+      update_cache: yes
+
+  - name: Upgrade no servidor
+    apt:
+      upgrade: dist
+
+  - name: Instala uma lista de pacotes
+    apt:
+      name: "{{ packages }}"
+    vars:
+      packages:
+      - php7.0
+      - libapache2-mod-php7.0
+      - apache2
+
+  - name: copiando virtualhost 
+    template:
+      src: ./vhost.conf
+      dest: /etc/apache2/sites-available/{{ name_vhost }}.conf
+
+  - name: criando diretorio
+    file:
+      path: '{{ diretorio_index }}'
+      state: directory
+      owner: www-data
+      group: www-data
+      mode: 0775
+      recurse: yes
+
+  - name: adicionando porta
+    lineinfile:
+      path: /etc/apache2/ports.conf
+      line: 'Listen {{ porta }}'
+      state: present
+      create: yes
+
+  - name: copiando index.html 
+    copy:
+      src: ./index.html
+      dest: '{{ diretorio_index }}'
+
+  - name: habilitar novo virtualhost
+    shell: a2ensite {{ name_vhost }}.conf
+
+  - name: reinicia apache2
+    service:
+      name: apache2
+      state: reloaded
