@@ -1,16 +1,3 @@
-- hosts: webservers
-  remote_user: assert
-  become: yes
-  vars:
-     porta: 8088
-     name_vhost: edson
-     diretorio_index: /var/www/edson/
-     domain: edson.com
-     alias: www.edson.com
-     admin: luis
-
-  tasks:
-
   - name: update no servidor
     apt:
       update_cache: yes
