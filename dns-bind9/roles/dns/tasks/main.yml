@@ -1,39 +1,20 @@
-- hosts: dnsservers
-  remote_user: assert
-  become: yes
-  gather_facts: no
-  vars:
-    iface: enp0s3
-    ip_dns: 192.168.0.222
-    id: 222
-    network: 192.168.0.0
-    arpa: 0.168.192.in-addr.arpa
-    netmask: 255.255.255.0
-    gateway: 192.168.0.1
-    name_server: dddns 
-    domain: deploy.ansible
-    forward: 8.8.8.8
+#  - name: update no servidor
+#    apt:
+#      update_cache: yes
 
+#  - name: Upgrade no servidor
+#    apt:
+#      upgrade: dist
 
-  tasks:
-
-  - name: update no servidor
-    apt:
-      update_cache: yes
-
-  - name: Upgrade no servidor
-    apt:
-      upgrade: dist
-
-  - name: Instalando Lista de pacotes
-    apt:
-      name: "{{ packages }}"
-    vars:
-      packages:
-      - bind9
-      - dnsutils
-      - python-dbus
-      - python3-dbus
+#  - name: Instalando Lista de pacotes
+#    apt:
+#      name: "{{ packages }}"
+#    vars:
+#      packages:
+#      - bind9
+#      - dnsutils
+#      - python-dbus
+#      - python3-dbus
 
   - name: editar arquivo hosts
     shell: echo "{{ ip_dns }} {{ name_server }} {{ name_server }}.{{ domain }}" > /etc/hosts
@@ -44,19 +25,19 @@
 
   - name: copiando arquivo interfaces
     template:
-      src: ./arq/interfaces
+      src: interfaces
       dest: /etc/network/interfaces
   - name: copiando Zona direta 
     template:
-      src: ./arq/direta
+      src: direta
       dest: /etc/bind/db.{{ domain }}
   - name: copiando zona reversa
     template:
-      src: ./arq/reversa
+      src: reversa
       dest: /etc/bind/db.reverse.{{ domain  }}
   - name: copiando conf.local
     template:
-      src: ./arq/conf-local
+      src: conf-local
       dest: /etc/bind/named.conf.local
 
   - name: editar forward

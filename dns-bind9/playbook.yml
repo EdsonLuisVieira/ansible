@@ -1,0 +1,17 @@
+- hosts: dnsserver
+  remote_user: root
+  become: yes
+  gather_facts: no
+  vars:
+    iface: enp0s3
+    ip_dns: 10.0.4.60
+    id: 60
+    network: 10.0.4.0
+    arpa: 4.0.10.in-addr.arpa
+    netmask: 255.255.255.0
+    gateway: 10.0.4.254
+    name_server: srv
+    domain: edson.luis
+    forward: 200.129.79.61
+  roles:
+    - dns
