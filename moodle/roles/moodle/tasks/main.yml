@@ -1,4 +1,4 @@
-- name: Create a new database with name 'moodle'
+  - name: Create a new database with name 'moodle'
     mysql_db:
       login_user: root
       login_password: '{{ passwd_new_mysql }}'
@@ -16,18 +16,15 @@
 
   - name: Download moodle
     get_url: 
-      url: https://download.moodle.org/download.php/stable37/moodle-latest-37.tgz
-      dest: /tmp/moodle-latest-37.tgz
+      url: https://download.moodle.org/download.php/direct/stable37/moodle-latest-37.tgz
+      dest: /tmp/moodle-latest-37.tar.gz
 
   - name: descompactando file
     unarchive:
-      src: /tmp/moodle-latest-37.tgz
+      src: /tmp/moodle-latest-37.tar.gz
       dest: /var/www/html/
       remote_src: yes
 
-  - name: pip pymysql.
-    shell: mv /var/www/html/moodle-latest-37 /var/www/html/moodle/
- 
   - name: Copy file with owner and permissions
     file:
       path: /var/www/html/moodle

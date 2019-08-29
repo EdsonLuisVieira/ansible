@@ -11,25 +11,25 @@
       name: "{{ packages }}"
     vars:
       packages:
-      - php7.0
-      - php7.0-ldap
-      - php7.0-mysql
-      - php7.0-mbstring
-      - php7.0-xml
-      - php7.0-zip
-      - libapache2-mod-php7.0
-      - php7.0-common
-      - php7.0-xmlrpc 
-      - php7.0-soap 
-      - php7.0-gd
-      - php7.0-cli 
-      - php7.0-mcrypt 
-      - php7.0-curl
+      - php7.2
+      - php7.2-ldap
+      - php7.2-mysql
+      - php7.2-mbstring
+      - php7.2-xml
+      - php7.2-zip
+      - libapache2-mod-php7.2
+      - php7.2-common
+      - php7.2-xmlrpc 
+      - php7.2-soap 
+      - php7.2-gd
+      - php7.2-cli 
+      - php7.2-curl
+      - php7.2-intl
       - apache2
       - mysql-server
       - mysql-client
-      - python-mysqldb
       - python-pymysql
+      - python3-pymysql
 
   - name: reinicia apache2
     service:
@@ -40,7 +40,6 @@
     mysql_user: 
       name: root
       password: '{{ passwd_new_mysql }}'
-      check_implicit_admin: yes
+      state: present
       login_user: root
       login_password: '{{ passwd_old_mysql }}'
-      state: present

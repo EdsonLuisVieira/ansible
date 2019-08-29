@@ -1,11 +1,10 @@
-- hosts: moodle
-  remote_user: moodle
-  become: yes
+- hosts: web
+  remote_user: root
   vars:
      database: moodle
      user_database: moodle
      pass_database: moodle
-     passwd_new_mysql: newpassroot
+     passwd_new_mysql: root2
      passwd_old_mysql: root
   roles:
     - lamp
