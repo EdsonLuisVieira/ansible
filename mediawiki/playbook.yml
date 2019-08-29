@@ -1,0 +1,88 @@
+- hosts: webserver
+  remote_user: 
+  vars:
+     database: mediawiki
+     user_database: mediawiki
+     pass_database: mediawiki
+     passwd_new_mysql: newpassroot
+     passwd_old_mysql: root
+  tasks:
+
+  - name: update
+    apt:
+      update_cache: yes
+  - name: Install a list of packages
+    apt:
+      name: "{{ packages }}"
+    vars:
+      packages:
+      - apache
+      - php5
+      - libapache2-mod-php5
+      - mysql-server
+      - php5-ldap
+      - php5-mysql
+      - php5-xml
+      - mysql-client
+      - python-pip
+      - php5-mysqlnd
+
+  - name: pip pymysql.
+    shell: pip install pymysql
+
+  - name: reinicia apache2
+    service:
+      name: apache2
+      state: reloaded
+
+  - name: Configurando senha do Root myslq
+    mysql_user: 
+      name: root
+      password: '{{ passwd_new_mysql }}'
+      check_implicit_admin: yes
+      login_user: root
+      login_password: '{{ passwd_old_mysql }}'
+      state: present
+
+  - name: Create a new database with name 'midiawiki'
+    mysql_db:
+      login_user: root
+      login_password: 
+      name: '{{ database }}'
+      state: present
+
+  - name: Create user associate database and define permissions'
+    mysql_user:
+      login_user: root
+      login_password: 
+      name: '{{ user_database }}'
+      password: '{{ pass_database }}' 
+      priv: '*.*:ALL,GRANT'
+      state: present
+
+  - name: Download mediawiki
+    get_url: 
+      url: https://releases.wikimedia.org/mediawiki/1.29/mediawiki-1.29.3.tar.gz
+      dest: /tmp/mediawiki-1.29.3.tar.gz
+
+  - name: descompactando file
+    unarchive:
+      src: /tmp/mediawiki-1.29.3.tar.gz
+      dest: /var/www/html/
+      remote_src: yes
+
+  - name: pip pymysql.
+    shell: mv /var/www/html/mediawiki-1.29.3/ /var/www/html/mediawiki/
+ 
+  - name: Copy file with owner and permissions
+    file:
+      path: /var/www/html/mediawiki
+      owner: www-data
+      group: www-data
+      mode: '0744'
+      remote_src: yes
+
+  - name: Restart service apache2, in all cases
+    service:
+      name: apache2
+      state: restarted
