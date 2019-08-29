@@ -1,0 +1,12 @@
+- hosts: moodle
+  remote_user: moodle
+  become: yes
+  vars:
+     database: moodle
+     user_database: moodle
+     pass_database: moodle
+     passwd_new_mysql: newpassroot
+     passwd_old_mysql: root
+  roles:
+    - lamp
+    - moodle

@@ -47,14 +47,14 @@
   - name: Create a new database with name 'midiawiki'
     mysql_db:
       login_user: root
-      login_password: 
+      login_password: '{{ passwd_new_mysql }}'
       name: '{{ database }}'
       state: present
 
   - name: Create user associate database and define permissions'
     mysql_user:
       login_user: root
-      login_password: 
+      login_password: '{{ passwd_new_mysql }}'
       name: '{{ user_database }}'
       password: '{{ pass_database }}' 
       priv: '*.*:ALL,GRANT'
@@ -71,7 +71,7 @@
       dest: /var/www/html/
       remote_src: yes
 
-  - name: pip pymysql.
+  - name: rename file
     shell: mv /var/www/html/mediawiki-1.29.3/ /var/www/html/mediawiki/
  
   - name: Copy file with owner and permissions

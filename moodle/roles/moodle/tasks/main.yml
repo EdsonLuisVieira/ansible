@@ -1,0 +1,51 @@
+- name: Create a new database with name 'moodle'
+    mysql_db:
+      login_user: root
+      login_password: '{{ passwd_new_mysql }}'
+      name: '{{ database }}'
+      state: present
+
+  - name: Create user associate database and define permissions'
+    mysql_user:
+      login_user: root
+      login_password: '{{ passwd_new_mysql }}'
+      name: '{{ user_database }}'
+      password: '{{ pass_database }}' 
+      priv: '*.*:ALL,GRANT'
+      state: present
+
+  - name: Download moodle
+    get_url: 
+      url: https://download.moodle.org/download.php/stable37/moodle-latest-37.tgz
+      dest: /tmp/moodle-latest-37.tgz
+
+  - name: descompactando file
+    unarchive:
+      src: /tmp/moodle-latest-37.tgz
+      dest: /var/www/html/
+      remote_src: yes
+
+  - name: pip pymysql.
+    shell: mv /var/www/html/moodle-latest-37 /var/www/html/moodle/
+ 
+  - name: Copy file with owner and permissions
+    file:
+      path: /var/www/html/moodle
+      owner: www-data
+      group: www-data
+      mode: '0755'
+      recurse: yes
+      remote_src: yes
+
+  - name: Create a directory if it does not exist
+    file:
+      path: /var/moodledata
+      state: directory
+      owner: www-data
+      group: www-data
+      mode: '0755'
+
+  - name: Restart service apache2, in all cases
+    service:
+      name: apache2
+      state: restarted

@@ -1,5 +1,5 @@
 - hosts: webservers
-  remote_user: assert
+  remote_user: 
   become: yes
   vars:
      passwd_new_mysql: edson
