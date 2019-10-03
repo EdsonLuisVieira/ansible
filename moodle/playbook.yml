@@ -1,7 +1,8 @@
 - hosts: web
   remote_user: root
+  gather_facts: no
   vars:
-     database: moodle
+     database: moodle2
      user_database: moodle
      pass_database: moodle
      passwd_new_mysql: root2

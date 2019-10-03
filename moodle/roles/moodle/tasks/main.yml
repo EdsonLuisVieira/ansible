@@ -27,20 +27,20 @@
 
   - name: Copy file with owner and permissions
     file:
-      path: /var/www/html/moodle
+      path: /var/www/html
       owner: www-data
       group: www-data
-      mode: '0755'
+      mode: '0766'
       recurse: yes
       remote_src: yes
 
   - name: Create a directory if it does not exist
     file:
-      path: /var/moodledata
+      path: /var/www/moodledata
       state: directory
       owner: www-data
       group: www-data
-      mode: '0755'
+      mode: '0766'
 
   - name: Restart service apache2, in all cases
     service:
