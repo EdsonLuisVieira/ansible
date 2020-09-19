@@ -1,5 +1,5 @@
 - hosts: webservers
-  remote_user: assert
+  remote_user: #USER#
   become: yes
   vars:
      porta: 8088
