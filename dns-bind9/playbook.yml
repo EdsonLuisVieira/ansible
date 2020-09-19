@@ -3,7 +3,7 @@
   become: yes
   gather_facts: no
   vars:
-    iface: enp0s3
+    iface: eth0
     ip_dns: 10.0.4.60
     id: 60
     network: 10.0.4.0
